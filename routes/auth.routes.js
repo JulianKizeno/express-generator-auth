@@ -14,7 +14,7 @@ router.post("/signup", (req, res, next) => {
 
     const { username, password } = req.body
 
-    if (!username || !password) {
+    if (typeof username !== "string" || typeof password !== "string" || !username || !password) {
         res.render("auth/signup", { errorMsg: "Rellena el usuario y la contraseña" })
         return
     }
@@ -48,9 +48,11 @@ router.post('/login', passport.authenticate("local", {
 
 
 // User logout
-router.get("/logout", (req, res) => {
-    req.logout()
-    res.redirect("/login")
+router.get("/logout", (req, res, next) => {
+    req.logout(err => {
+        if (err) return next(err)
+        res.redirect("/login")
+    })
 })
 
 module.exports = router
