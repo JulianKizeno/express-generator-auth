@@ -14,7 +14,7 @@ router.post("/signup", (req, res, next) => {
 
     const { username, password } = req.body
 
-    if (!username || !password) {
+    if (typeof username !== "string" || typeof password !== "string" || !username || !password) {
         res.render("auth/signup", { errorMsg: "Rellena el usuario y la contraseña" })
         return
     }
